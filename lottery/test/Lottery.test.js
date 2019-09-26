@@ -1,12 +1,7 @@
 const assert = require('assert')
 const ganache = require('ganache-cli')
 const Web3 = require('web3')
-const {
-  abi,
-  evm: {
-    bytecode: { object: bytecode }
-  }
-} = require('../compile')
+const { abi, bytecode } = require('../compile')
 
 const web3 = new Web3(ganache.provider())
 

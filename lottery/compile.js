@@ -21,5 +21,10 @@ const input = {
     }
   }
 }
-const output = solc.compile(JSON.stringify(input))
-module.exports = JSON.parse(output).contracts['Lottery.sol'].Lottery
+const output = JSON.parse(solc.compile(JSON.stringify(input)))
+  .contracts['Lottery.sol']
+  .Lottery
+const { abi, evm: { bytecode: { object } } } = output
+
+exports.abi = abi
+exports.bytecode = object
