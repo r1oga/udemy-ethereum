@@ -49,12 +49,22 @@ describe('Lottery', () => {
       assert.equal(act, players[i])
     })
   })
+
   it('require a minimum of ether to enter', async () => {
     try {
       await lottery.methods.enter().send({
         from: accounts[0],
         value: web3.utils.toWei('0.001', 'ether')
       })
+      assert(false)
+    } catch (error) {
+      assert(error)
+    }
+  })
+
+  it('require to be manager to pick a winner', async () => {
+    try {
+      await lottery.methods.pickWinner().send({ from: accounts[1] })
       assert(false)
     } catch (error) {
       assert(error)
