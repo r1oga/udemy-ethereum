@@ -70,4 +70,17 @@ describe('Lottery', () => {
       assert(error)
     }
   })
+
+  it('manager can pick a winner', async () => {
+    await lottery.methods.enter().send({
+      from: accounts[1],
+      value: web3.utils.toWei('0.1', 'ether')
+    })
+    const balanceBefore = await web3.eth.getBalance(accounts[1])
+    const { events: { winner: { returnValues } } } = await lottery.methods.pickWinner().send({ from: accounts[0] })
+    const balanceAfter = await web3.eth.getBalance(accounts[1])
+
+    assert.equal(returnValues[0], accounts[1])
+    assert(balanceBefore < balanceAfter)
+  })
 })
