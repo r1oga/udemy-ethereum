@@ -71,7 +71,7 @@ describe('Lottery', () => {
     }
   })
 
-  it('manager can pick a winner', async () => {
+  it('can pick a winner, sends him all money pool and reset players array', async () => {
     await lottery.methods.enter().send({
       from: accounts[1],
       value: web3.utils.toWei('0.1', 'ether')
@@ -82,5 +82,12 @@ describe('Lottery', () => {
 
     assert.equal(returnValues[0], accounts[1])
     assert(balanceBefore < balanceAfter)
+    assert.equal(
+      await web3.eth.getBalance(lottery.options.address),
+      +0,
+      'lottery pool should be empty'
+    )
+    const players = await lottery.methods.getPlayers().call()
+    assert.equal(players.length, 0, 'players Array should be reset')
   })
 })
